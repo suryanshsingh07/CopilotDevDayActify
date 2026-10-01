@@ -1,9 +1,9 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   LayoutDashboard, FileText, CalendarDays, TrendingUp,
-  LogOut, Zap, Sun, Moon, Database,
+  LogOut, Zap, Sun, Moon, Database, Bot, ShieldAlert, Timer
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
@@ -19,6 +19,9 @@ const navItems = [
   { to: '/tasks',     icon: FileText,        label: 'My Tasks'    },
   { to: '/today',     icon: CalendarDays,    label: "Today's Plan" },
   { to: '/progress',  icon: TrendingUp,      label: 'Progress'    },
+  { to: '/ai-chat',   icon: Bot,             label: 'Talk with AI', badge: 'AI' },
+  { to: '/benefits',  icon: ShieldAlert,     label: 'Student Rights' },
+  { to: '/toolkit',   icon: Timer,           label: 'Focus Studio' },
 ];
 
 export default function AppLayout({ children, title }: AppLayoutProps) {
@@ -62,9 +65,26 @@ export default function AppLayout({ children, title }: AppLayoutProps) {
               to={item.to}
               className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`}
               onClick={() => setSidebarOpen(false)}
+              style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
             >
-              <span className="icon"><item.icon size={18} /></span>
-              <span>{item.label}</span>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <span className="icon"><item.icon size={18} /></span>
+                <span>{item.label}</span>
+              </div>
+              {item.badge && (
+                <span style={{
+                  background: '#FFE500',
+                  color: '#111',
+                  border: '1.5px solid #111',
+                  fontSize: '0.65rem',
+                  fontWeight: '900',
+                  padding: '1px 6px',
+                  borderRadius: '2px',
+                  boxShadow: '1px 1px 0 #111'
+                }}>
+                  {item.badge}
+                </span>
+              )}
             </NavLink>
           ))}
         </nav>
@@ -133,7 +153,7 @@ export default function AppLayout({ children, title }: AppLayoutProps) {
             </div>
 
             <span className="navbar-greeting">
-              Hello, <strong>{user?.name?.split(' ')[0]}</strong> 👋
+              Hello, <strong>{user?.name?.split(' ')[0]}</strong>
             </span>
           </div>
         </header>
